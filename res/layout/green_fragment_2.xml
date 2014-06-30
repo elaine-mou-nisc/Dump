@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/fragment_block"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/green_fragment_colors">
+    <ImageView android:id="@+id/health_image"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_weight="1"
+               android:paddingLeft="15dp"
+               android:paddingRight="15dp"
+               android:layout_gravity="center"/>
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/pressed_green"
+              android:textSize="18sp"
+              android:text="Systems OK"
+              android:gravity="center"
+              android:layout_gravity="center"/>
+    <TextView android:id="@+id/timestamp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="3dp"
+              android:layout_gravity="bottom"
+              android:gravity="left|bottom"
+              android:textColor="@color/pressed_green"
+              android:textSize="8dp"/>
+</LinearLayout>

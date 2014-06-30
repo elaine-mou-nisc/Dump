@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <FrameLayout android:id="@+id/green_fragment"
+                 android:layout_height="144dp"
+                 android:layout_width="288dp"
+                 android:padding="5dp"
+            />
+<!--    <FrameLayout android:id="@+id/red_fragment"
+                 android:layout_height="144dp"
+                 android:layout_width="288dp"
+                 android:padding="5dp"
+            />-->
+    <FrameLayout android:id="@+id/pie_fragment"
+                               android:layout_height="144dp"
+                               android:layout_width="288dp"
+                               android:padding="5dp"
+        />
+    <FrameLayout android:id="@+id/progress_fragment"
+                 android:layout_height="144dp"
+                 android:layout_width="144dp"
+                 android:padding="5dp"
+            />
+</LinearLayout>
+
