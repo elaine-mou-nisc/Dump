@@ -2,18 +2,19 @@ package com.example.SystemHealth_Android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import org.w3c.dom.Text;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by emou on 6/20/14.
@@ -21,8 +22,9 @@ import java.util.ArrayList;
 public class PieFragment extends Fragment implements View.OnClickListener {
 
     ArrayList<PieChartSlice> sliceArrayList;
-    ArrayList<Contact> contactArrayList;
+    ArrayList<Request> requestArrayList;
     int limit = 4;
+    long timeOfLastDBCheck=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,33 +37,84 @@ public class PieFragment extends Fragment implements View.OnClickListener {
 
         if(savedInstanceState!=null) {
             sliceArrayList = savedInstanceState.getParcelableArrayList("sliceArrayList");
-            contactArrayList = savedInstanceState.getParcelableArrayList("contactArrayList");
+            requestArrayList = savedInstanceState.getParcelableArrayList("requestArrayList");
         }
 
-        ContactDataSource contactDataSource = new ContactDataSource(getActivity());
-        try {
-            contactDataSource.open();
-            contactArrayList = contactDataSource.getTopContacts(limit);
-            contactDataSource.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        int size;
 
-        int size = contactArrayList.size();
+        if(System.currentTimeMillis() - timeOfLastDBCheck > 3000) {
 
-        if(sliceArrayList==null) {
-            sliceArrayList = new ArrayList<PieChartSlice>();
+            CTTileDataSource requestDataSource = new CTTileDataSource(getActivity());
+
+            JSONObject jsonObject=null;
+            try {
+                jsonObject = new BackgroundJsonTask(getActivity()).execute(R.raw.contact_tile).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            if(jsonObject!=null && jsonObject.has("results")) {
+                try {
+                    JSONArray resultsArray = jsonObject.getJSONArray("results");
+                    int resultsLength = resultsArray.length();
+
+                    requestDataSource.open();
+                    requestDataSource.clearRequestsDB();
+                    for(int i=0;i<resultsLength;i++){
+                        jsonObject = resultsArray.getJSONObject(i);
+                        Request request=null;
+                        if(jsonObject.has("description")){
+                            request = new Request(jsonObject.getString("description"));
+                            if(jsonObject.has("count")){
+                                request.mCount = jsonObject.getInt("count");
+                            }
+                        }
+                        if(request!=null) {
+                            requestDataSource.addRequest(request);
+                        }
+                    }
+                    requestDataSource.close();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            try {
+                requestDataSource.open();
+                requestArrayList = requestDataSource.getTopRequests(limit);
+                requestDataSource.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            timeOfLastDBCheck = System.currentTimeMillis();
+
+            size = requestArrayList.size();
+
+            if(sliceArrayList==null) {
+                sliceArrayList = new ArrayList<PieChartSlice>();
+            }
+
+            if(sliceArrayList.size()<size){
+                while(sliceArrayList.size()<size){
+                    sliceArrayList.add(new PieChartSlice(1));
+                }
+            }else if(sliceArrayList.size()>size){
+                while(sliceArrayList.size()>size){
+                    sliceArrayList.remove(sliceArrayList.size()-1);
+                }
+            }
+
+            size = sliceArrayList.size();
 
             for(int i=0;i<size;i++){
-                sliceArrayList.add(new PieChartSlice(1));
+                sliceArrayList.get(i).mValue = requestArrayList.get(i).mCount;
+                sliceArrayList.get(i).mSubject = requestArrayList.get(i).mDescription;
             }
-        }
-
-        size = sliceArrayList.size();
-
-        for(int i=0;i<size;i++){
-            sliceArrayList.get(i).mValue = contactArrayList.get(i).mAmount;
-            sliceArrayList.get(i).mSubject = contactArrayList.get(i).mName;
         }
 
         pieChart.setSliceArrayList(sliceArrayList);
@@ -134,7 +187,7 @@ public class PieFragment extends Fragment implements View.OnClickListener {
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList("sliceArrayList",sliceArrayList);
 
-        savedInstanceState.putParcelableArrayList("contactArrayList",contactArrayList);
+        savedInstanceState.putParcelableArrayList("requestArrayList", requestArrayList);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -142,7 +195,7 @@ public class PieFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        Intent intent = new Intent(getActivity(),ContactTrackingActivity.class);
+        Intent intent = new Intent(getActivity(),CTDatePickerActivity.class);
         startActivity(intent);
     }
 }

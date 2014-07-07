@@ -1,29 +1,13 @@
 package com.example.SystemHealth_Android;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
- * Created by emou on 6/27/14.
+ * Created by emou on 7/3/14.
  */
-public class Contact implements Parcelable {
-    String mName;
-    int mAmount = 0;
+public class Contact {
 
-    Contact(String name){
-        mName = name;
-    }
-    Contact(String name,int amount){
-        mName = name;
-        mAmount = amount;
-    }
+    String name;
+    int contactId;
+    int dateCreated;
+    String status;
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-    }
 }

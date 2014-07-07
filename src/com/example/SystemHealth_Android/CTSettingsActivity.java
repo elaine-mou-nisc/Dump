@@ -10,7 +10,7 @@ import android.widget.RadioGroup;
 /**
  * Created by emou on 6/26/14.
  */
-public class ContactSettingsActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
+public class CTSettingsActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -21,12 +21,12 @@ public class ContactSettingsActivity extends Activity implements RadioGroup.OnCh
     }
 
     private void initSettings(){
-        String sortBy = getSharedPreferences("ContactListPreferences", Context.MODE_PRIVATE).getString("sortField","amount");
+        String sortBy = getSharedPreferences("ContactListPreferences", Context.MODE_PRIVATE).getString("sortField","count");
         String sortOrder = getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).getString("sortOrder","DESC");
 
         RadioButton rbType = (RadioButton) findViewById(R.id.radioType);
         RadioButton rbAmount = (RadioButton) findViewById(R.id.radioAmount);
-        if(sortBy.equalsIgnoreCase("contactType")){
+        if(sortBy.equalsIgnoreCase("description")){
             rbType.setChecked(true);
         }else{
             rbAmount.setChecked(true);
@@ -42,11 +42,11 @@ public class ContactSettingsActivity extends Activity implements RadioGroup.OnCh
 
         switch(checkedId){
             case R.id.radioType://set to alphabetical sort
-                getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortField","contactType").commit();
+                getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortField","description").commit();
                 getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortOrder","ASC").commit();
                 break;
             case R.id.radioAmount://sort by number (decreasing from top)
-                getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortField","amount").commit();
+                getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortField","count").commit();
                 getSharedPreferences("ContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortOrder","DESC").commit();
                 break;
         }

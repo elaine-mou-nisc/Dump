@@ -1,0 +1,174 @@
+{
+  "startDate": 1401840000,
+  "endDate": 1404432000,
+  "currentDate": 1404691200,
+  "results": [
+    {
+      "code": 12345,
+      "description": "Outage Report",
+      "count": 6,
+      "contacts": [
+        {
+          "name": "John Doe",
+          "contactId": 586846,
+          "dateCreated": 1402370675,
+          "status": "O"
+        },
+        {
+          "name": "Mary Smith",
+          "contactId": 234514,
+          "dateCreated": 1402562226,
+          "status": "C"
+        },
+        {
+          "name": "Jack Campbell",
+          "contactId": 827850,
+          "dateCreated": 1403004046,
+          "status": "O"
+        },
+        {
+          "name": "Bill Clinton",
+          "contactId": 927509,
+          "dateCreated": 1403286273,
+          "status": "O"
+        },
+        {
+          "name": "Nate Morgan",
+          "contactId": 843729,
+          "dateCreated": 1403600635,
+          "status": "C"
+        },
+        {
+          "name": "Sam Johnson",
+          "contactId": 748293,
+          "dateCreated": 1403978704,
+          "status": "O"
+        }
+      ]
+    },
+    {
+      "code": 23456,
+      "description": "Payment Request",
+      "count": 5,
+      "contacts": [
+        {
+          "name": "Mary Smith",
+          "contactId": 234514,
+          "dateCreated": 1402562226,
+          "status": "C"
+        },
+        {
+          "name": "Jack Campbell",
+          "contactId": 827850,
+          "dateCreated": 1403004046,
+          "status": "O"
+        },
+        {
+          "name": "Bill Clinton",
+          "contactId": 927509,
+          "dateCreated": 1403286273,
+          "status": "O"
+        },
+        {
+          "name": "Nate Morgan",
+          "contactId": 843729,
+          "dateCreated": 1403600635,
+          "status": "C"
+        },
+        {
+          "name": "Sam Johnson",
+          "contactId": 748293,
+          "dateCreated": 1403978704,
+          "status": "O"
+        }
+      ]
+    },
+    {
+      "code": 34567,
+      "description": "Arrangements",
+      "count": 3,
+      "contacts": [
+        {
+          "name": "Jack Campbell",
+          "contactId": 827850,
+          "dateCreated": 1403004046,
+          "status": "O"
+        },
+        {
+          "name": "Bill Clinton",
+          "contactId": 927509,
+          "dateCreated": 1403286273,
+          "status": "O"
+        },
+        {
+          "name": "Sam Johnson",
+          "contactId": 748293,
+          "dateCreated": 1403978704,
+          "status": "O"
+        }
+      ]
+    },
+    {
+      "code": 45678,
+      "description": "Energy Assist",
+      "count": 2,
+      "contacts": [
+        {
+          "name": "Bill Clinton",
+          "contactId": 927509,
+          "dateCreated": 1403286273,
+          "status": "O"
+        },
+        {
+          "name": "Nate Morgan",
+          "contactId": 843729,
+          "dateCreated": 1403600635,
+          "status": "C"
+        }
+      ]
+    },
+    {
+      "code": 56789,
+      "description": "Account Creation",
+      "count": 6,
+      "contacts": [
+        {
+          "name": "John Doe",
+          "contactId": 586846,
+          "dateCreated": 1402370675,
+          "status": "O"
+        },
+        {
+          "name": "Mary Smith",
+          "contactId": 234514,
+          "dateCreated": 1402562226,
+          "status": "C"
+        },
+        {
+          "name": "Jack Campbell",
+          "contactId": 827850,
+          "dateCreated": 1403004046,
+          "status": "O"
+        },
+        {
+          "name": "Bill Clinton",
+          "contactId": 927509,
+          "dateCreated": 1403286273,
+          "status": "O"
+        },
+        {
+          "name": "Nate Morgan",
+          "contactId": 843729,
+          "dateCreated": 1403600635,
+          "status": "C"
+        },
+        {
+          "name": "Sam Johnson",
+          "contactId": 748293,
+          "dateCreated": 1403978704,
+          "status": "O"
+        }
+      ]
+    }
+  ]
+}

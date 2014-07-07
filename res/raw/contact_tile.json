@@ -1,0 +1,38 @@
+{
+  "startDate": 1401856158,
+  "endDate": 1404447963,
+  "currentDate": 1404447963,
+  "results": [
+    {
+      "code": 12345,
+      "description": "Outage Report",
+      "count": 6
+    },
+    {
+      "code": 56789,
+      "description": "Account Creation",
+      "count": 6
+    },
+    {
+      "code": 23456,
+      "description": "Payment Request",
+      "count": 5
+    },
+    {
+      "code": 34567,
+      "description": "Arrangements",
+      "count": 3
+    },
+    {
+      "code": 67890,
+      "description": "Account Cancellation",
+      "count": 2
+    },
+    {
+      "code": 45678,
+      "description": "Energy Assist",
+      "count": 2
+    }
+  ]
+}
+    
