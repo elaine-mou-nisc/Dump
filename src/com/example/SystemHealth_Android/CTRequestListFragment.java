@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,14 +15,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by emou on 6/26/14.
  */
-public class CTRequestListFragment extends Fragment{
+public class CTRequestListFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     ArrayList<Request> requestArrayList = new ArrayList<Request>();
     View myFragmentView;
@@ -34,34 +35,38 @@ public class CTRequestListFragment extends Fragment{
 
         if(savedInstanceState==null) {
             initList();
-
-            UpdateDataSourceTask updateDataSourceTask = new UpdateDataSourceTask();
-            updateDataSourceTask.execute();
-
             timeOfLastRefresh = System.currentTimeMillis();
-
-            ListView listView = (ListView) myFragmentView.findViewById(R.id.contact_list);
-            listView.setAdapter(new ContactAdapter(getActivity(), R.layout.twoitem_list, requestArrayList));
         }
 
+        ListView listView = (ListView) myFragmentView.findViewById(R.id.request_list);
+        listView.setOnItemClickListener(this);
         TextView textView = (TextView) myFragmentView.findViewById(R.id.date_display);
         textView.setText("Start: " + getArguments().getString("date1") + "\n" +
                          "End: " + getArguments().getString("date2"));
         return myFragmentView;
     }
 
-    public class UpdateDataSourceTask extends AsyncTask<Void,Void,Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            CTRequestDataSource requestDataSource = new CTRequestDataSource(getActivity());
-
-            requestDataSource.open();
-            requestDataSource.clearRequestsDB();
-            requestDataSource.addToRequestList(requestArrayList);
-            requestDataSource.close();
-
-            return null;
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.v("OnItemClick", "OnItemClick");
+        if(parent==myFragmentView.findViewById(R.id.request_list)){
+            Log.v("OnItemClick","parent = request_list");
+            if(getActivity().findViewById(R.id.right_fragment)!=null){
+                Log.v("OnItemClick","right_fragment != null");
+                CTContactListFragment contactListFragment = new CTContactListFragment();
+                Bundle args = new Bundle();
+                args.putInt("requestCode",requestArrayList.get(position).mCode);
+                args.putString("requestDescription",requestArrayList.get(position).mDescription);
+                contactListFragment.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment,contactListFragment)
+                        .addToBackStack(null).commit();
+            }else {
+                Log.v("OnItemClick","right_fragment = null");
+                Intent intent = new Intent(getActivity(), CTContactListActivity.class);
+                intent.putExtra("requestCode",requestArrayList.get(position).mCode);
+                intent.putExtra("requestDescription",requestArrayList.get(position).mDescription);
+                startActivity(intent);
+            }
         }
     }
 
@@ -71,22 +76,18 @@ public class CTRequestListFragment extends Fragment{
 
         if(requestArrayList.isEmpty() && (System.currentTimeMillis() - timeOfLastRefresh) > 5000) {
             initList();
-
-            UpdateDataSourceTask updateDataSourceTask = new UpdateDataSourceTask();
-            updateDataSourceTask.execute();
-
             timeOfLastRefresh = System.currentTimeMillis();
         }
 
-        String sortBy = getActivity().getSharedPreferences("ContactListPreferences", Context.MODE_PRIVATE).getString("sortField","description");
-        String sortOrder = getActivity().getSharedPreferences("ContactListPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
         CTRequestDataSource requestDataSource = new CTRequestDataSource(getActivity());
+        String sortBy = getActivity().getSharedPreferences("CTRequestPreferences", Context.MODE_PRIVATE).getString("sortField","description");
+        String sortOrder = getActivity().getSharedPreferences("CTRequestPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
 
         requestDataSource.open();
-        requestArrayList = requestDataSource.getContacts(sortBy,sortOrder);
+        requestArrayList = requestDataSource.getRequests(sortBy, sortOrder);
         requestDataSource.close();
 
-        ListView listView = (ListView) myFragmentView.findViewById(R.id.contact_list);
+        ListView listView = (ListView) myFragmentView.findViewById(R.id.request_list);
         listView.setAdapter(new ContactAdapter(getActivity(), R.layout.twoitem_list, requestArrayList));
     }
 
@@ -118,26 +119,47 @@ public class CTRequestListFragment extends Fragment{
         @Override
         protected ArrayList<Request> doInBackground(JSONObject... params) {
 
-            int resultsCount;
-            JSONArray jsonArray;
             JSONObject jsonObject = params[0];
             ArrayList<Request> requestList = null;
+            ArrayList<Contact> contactList = null;
 
             try {
                 if(jsonObject.has("results")) {
-                    jsonArray = jsonObject.getJSONArray("results");
+                    JSONArray jsonRequestsArray = jsonObject.getJSONArray("results");
                     requestList = new ArrayList<Request>();
-                    resultsCount = jsonArray.length();
+                    contactList = new ArrayList<Contact>();
+                    int resultsCount = jsonRequestsArray.length();
 
                     for (int i = 0; i < resultsCount; i++) {
-                        jsonObject = jsonArray.getJSONObject(i);
+                        jsonObject = jsonRequestsArray.getJSONObject(i);
                         Request request = new Request(jsonObject.getString("description"), jsonObject.getInt("count"));
+                        request.mCode = jsonObject.getInt("code");
                         requestList.add(request);
+
+                        JSONArray jsonContactsArray = jsonObject.getJSONArray("contacts");
+                        int contactsSize = jsonContactsArray.length();
+                        for(int j=0;j<contactsSize;j++){
+                            JSONObject jsonContact = jsonContactsArray.getJSONObject(j);
+                            if(jsonContact.has("name")) {
+                                Contact contact = new Contact(jsonContact.getString("name"));
+                                contact.mContactId = jsonContact.getInt("contactId");
+                                contact.mDateCreated = jsonContact.getLong("dateCreated");
+                                contact.mStatus = jsonContact.getString("status");
+                                contact.mRequestCode = request.mCode;
+                                contactList.add(contact);
+                            }
+                        }
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            CTContactDataSource contactDataSource = new CTContactDataSource(getActivity());
+            contactDataSource.open();
+            contactDataSource.clearRequestsDB();
+            contactDataSource.addToContactList(contactList);
+            contactDataSource.close();
 
             return requestList;
         }
@@ -146,7 +168,7 @@ public class CTRequestListFragment extends Fragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.contact_list_frag_actions,menu);
+        inflater.inflate(R.menu.ct_requests_actions,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -156,7 +178,7 @@ public class CTRequestListFragment extends Fragment{
             case R.id.action_settings:
                 timeOfLastRefresh -= 5000;//allows page to refresh upon changing settings/order
 
-                Intent intent = new Intent(getActivity(),CTSettingsActivity.class);
+                Intent intent = new Intent(getActivity(),CTRequestSettings.class);
                 startActivity(intent);
                 return true;
             case R.id.action_refresh:
@@ -165,18 +187,15 @@ public class CTRequestListFragment extends Fragment{
 
                     initList();
 
+                    String sortBy = getActivity().getSharedPreferences("CTRequestPreferences", Context.MODE_PRIVATE).getString("sortField","description");
+                    String sortOrder = getActivity().getSharedPreferences("CTRequestPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
+
                     CTRequestDataSource requestDataSource = new CTRequestDataSource(getActivity());
-                    String sortBy = getActivity().getSharedPreferences("ContactListPreferences", Context.MODE_PRIVATE).getString("sortField","description");
-                    String sortOrder = getActivity().getSharedPreferences("ContactListPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
-
                     requestDataSource.open();
-                    requestDataSource.clearRequestsDB();
-                    requestDataSource.addToRequestList(requestArrayList);
-
-                    requestArrayList = requestDataSource.getContacts(sortBy,sortOrder);
+                    requestArrayList = requestDataSource.getRequests(sortBy,sortOrder);
                     requestDataSource.close();
 
-                    ListView listView = (ListView) myFragmentView.findViewById(R.id.contact_list);
+                    ListView listView = (ListView) myFragmentView.findViewById(R.id.request_list);
                     listView.setAdapter(new ContactAdapter(getActivity(), R.layout.twoitem_list, requestArrayList));
 
                     timeOfLastRefresh = currentTime;

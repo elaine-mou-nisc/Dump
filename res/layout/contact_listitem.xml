@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/text1"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:textColor="@android:color/black"
+                  android:text="Name"/>
+        <TextView android:id="@+id/text2"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:textColor="@android:color/black"
+                  android:gravity="right"
+                  android:text="Status"/>
+    </LinearLayout>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/text3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="18sp"
+              android:textColor="@android:color/darker_gray"
+              android:text="Date Created"/>
+    <TextView android:id="@+id/text4"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textSize="12sp"
+              android:textColor="@android:color/darker_gray"
+              android:gravity="left"
+              android:text="ID Number"/>
+</LinearLayout>

@@ -38,7 +38,15 @@
                     android:value=".ContactDatePickActivity"
                     />
         </activity>
-        <activity android:name=".CTSettingsActivity"
+        <activity android:name=".CTContactListActivity"
+                  android:label="@string/app_name"
+                  android:parentActivityName=".CTRequestListActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".CTRequestListActivity"
+                    />
+        </activity>
+        <activity android:name=".CTRequestSettings"
                   android:label="@string/app_name"
                   android:parentActivityName=".CTRequestListActivity">
             <meta-data
@@ -46,5 +54,13 @@
                     android:value=".ContactTrackingActivity"
                     />
         </activity>
+        <activity android:name=".CTContactSettings"
+                    android:label="@string/app_name"
+                    android:parentActivityName=".CTContactListActivity">
+        <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ContactTrackingActivity"
+                />
+    </activity>
     </application>
 </manifest>

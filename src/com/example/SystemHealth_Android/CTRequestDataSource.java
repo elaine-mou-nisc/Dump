@@ -27,7 +27,7 @@ public class CTRequestDataSource {
         dbHelper.close();
     }
 
-    public ArrayList<Request> getContacts(String sortField, String sortOrder){
+    public ArrayList<Request> getRequests(String sortField, String sortOrder){
         ArrayList<Request> requests = new ArrayList<Request>();
 
         try {
@@ -37,6 +37,7 @@ public class CTRequestDataSource {
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
                 Request newRequest = new Request(cursor.getString(1),cursor.getInt(2));
+                newRequest.mCode = cursor.getInt(0);
                 requests.add(newRequest);
                 cursor.moveToNext();
             }
@@ -63,6 +64,7 @@ public class CTRequestDataSource {
             request = requests.get(i);
 
             values = new ContentValues();
+            values.put("code",request.mCode);
             values.put("description", request.mDescription);
             values.put("count", request.mCount);
 
