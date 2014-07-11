@@ -169,6 +169,25 @@
           "status": "O"
         }
       ]
+    },
+    {
+      "code": 67890,
+      "description": "Account Cancellation",
+      "count": 2,
+      "contacts": [
+          {
+            "name": "Bill Clinton",
+            "contactId": 927509,
+            "dateCreated": 1403286273,
+            "status": "O"
+          },
+          {
+            "name": "Nate Morgan",
+            "contactId": 843729,
+            "dateCreated": 1403600635,
+            "status": "C"
+          }
+      ]
     }
   ]
 }

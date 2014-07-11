@@ -19,11 +19,11 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by emou on 6/20/14.
  */
-public class PieFragment extends Fragment implements View.OnClickListener {
+public class PieFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     ArrayList<PieChartSlice> sliceArrayList;
     ArrayList<Request> requestArrayList;
-    int limit = 4;
+    int limit = 3;
     long timeOfLastDBCheck=0;
 
     @Override
@@ -83,15 +83,17 @@ public class PieFragment extends Fragment implements View.OnClickListener {
                 }
             }
 
-
+            int othersCount=0;
             try {
                 requestDataSource.open();
                 requestArrayList = requestDataSource.getTopRequests(limit);
+                othersCount = requestDataSource.getOthersCount(limit);
                 requestDataSource.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             timeOfLastDBCheck = System.currentTimeMillis();
+            requestArrayList.add(new Request("Other",othersCount));
 
             size = requestArrayList.size();
 
@@ -132,6 +134,7 @@ public class PieFragment extends Fragment implements View.OnClickListener {
 
         ArrayAdapter adapter = new ColorTextAdapter(getActivity(),R.layout.small_list_textview,textArray,colors);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
 
         TextView textView = (TextView) myFragmentView.findViewById(R.id.timestamp);
         textView.setText(MyActivity.updateTime);
@@ -140,6 +143,11 @@ public class PieFragment extends Fragment implements View.OnClickListener {
         linearLayout.setOnClickListener(this);
 
         return myFragmentView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        onClick(view);
     }
 
     private class ColorTextAdapter extends ArrayAdapter {

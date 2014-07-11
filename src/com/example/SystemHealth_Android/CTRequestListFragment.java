@@ -59,7 +59,7 @@ public class CTRequestListFragment extends Fragment implements AdapterView.OnIte
                 args.putString("requestDescription",requestArrayList.get(position).mDescription);
                 contactListFragment.setArguments(args);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment,contactListFragment)
-                        .addToBackStack(null).commit();
+                        .commit();
             }else {
                 Log.v("OnItemClick","right_fragment = null");
                 Intent intent = new Intent(getActivity(), CTContactListActivity.class);
@@ -154,6 +154,12 @@ public class CTRequestListFragment extends Fragment implements AdapterView.OnIte
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            CTRequestDataSource requestDataSource = new CTRequestDataSource(getActivity());
+            requestDataSource.open();
+            requestDataSource.clearRequestsDB();
+            requestDataSource.addToRequestList(requestList);
+            requestDataSource.close();
 
             CTContactDataSource contactDataSource = new CTContactDataSource(getActivity());
             contactDataSource.open();

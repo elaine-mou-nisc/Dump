@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class CTTileDataSource {
         ArrayList<Request> requests = new ArrayList<Request>();
 
         try {
-            String query = "SELECT * FROM contact ORDER BY amount DESC LIMIT " + limit;
+            String query = "SELECT * FROM tileRequests ORDER BY count DESC LIMIT " + limit;
             Cursor cursor = database.rawQuery(query,null);
 
             cursor.moveToFirst();
@@ -47,6 +48,22 @@ public class CTTileDataSource {
         }
 
         return requests;
+    }
+
+    public int getOthersCount(int topNumber){
+        int count=0;
+
+        String query = "SELECT * FROM tileRequests ORDER BY count DESC";
+        Cursor cursor = database.rawQuery(query,null);
+
+        cursor.moveToPosition(topNumber);
+        while(!cursor.isAfterLast()){
+            count += cursor.getInt(2);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return count;
     }
 
     public void clearRequestsDB(){
