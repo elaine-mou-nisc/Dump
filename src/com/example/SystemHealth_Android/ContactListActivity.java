@@ -12,7 +12,7 @@ public class ContactListActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.frag_wrapper);
+        setContentView(R.layout.fragment_wrapper);
 
         ContactListFragment contactListFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();

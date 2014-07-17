@@ -12,7 +12,7 @@ public class DatePickerActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.frag_wrapper);
+        setContentView(R.layout.fragment_wrapper);
 
         DatePickerFragment contactDatePickFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();

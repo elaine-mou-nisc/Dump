@@ -27,7 +27,7 @@ public class DatePickerFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        myFragmentView = inflater.inflate(R.layout.contact_date_frag,container,false);
+        myFragmentView = inflater.inflate(R.layout.datepicker_fragment,container,false);
         Button button = (Button) myFragmentView.findViewById(R.id.search_button);
         button.setOnClickListener(this);
         if(savedInstanceState!=null){

@@ -4,15 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class MyActivity extends FragmentActivity {
 
@@ -29,7 +20,7 @@ public class MyActivity extends FragmentActivity {
             setContentView(R.layout.main_landscape);
         }
         else {
-            setContentView(R.layout.main);
+            setContentView(R.layout.main_portrait);
         }
 
 /*        String status = null;

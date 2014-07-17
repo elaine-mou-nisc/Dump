@@ -13,7 +13,7 @@ public class TrackingActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contact_act);
+        setContentView(R.layout.contact_activity);
 
         RequestListFragment contactListFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();

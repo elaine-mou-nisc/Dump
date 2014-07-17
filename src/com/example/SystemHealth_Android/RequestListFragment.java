@@ -31,7 +31,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        myFragmentView = inflater.inflate(R.layout.contact_request_frag,container,false);
+        myFragmentView = inflater.inflate(R.layout.requestlist_fragment,container,false);
         setHasOptionsMenu(true);
 
         if(savedInstanceState==null) {
@@ -137,7 +137,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
             expandableView.setAdapter(adapter);
         }else if(myFragmentView.findViewById(R.id.request_list)!=null){
             ListView listView = (ListView) myFragmentView.findViewById(R.id.request_list);
-            listView.setAdapter(new RequestAdapter(getActivity(),R.layout.twoitem_list,requestArrayList));
+            listView.setAdapter(new RequestAdapter(getActivity(),R.layout.twotext_listitem,requestArrayList));
         }
     }
 
@@ -250,7 +250,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView==null) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.twoitem_list, parent, false);
+                convertView = inflater.inflate(R.layout.twotext_listitem, parent, false);
             }
 
             if(requests !=null) {
@@ -317,7 +317,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             if(convertView==null){
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.twoitem_list,parent,false);
+                convertView = inflater.inflate(R.layout.twotext_listitem,parent,false);
             }
 
             if(requestsList!=null){

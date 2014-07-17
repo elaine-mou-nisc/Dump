@@ -30,7 +30,7 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View myFragmentView = inflater.inflate(R.layout.pie_fragment,container,false);
+        View myFragmentView = inflater.inflate(R.layout.pie_tile,container,false);
 
         PieChart pieChart = (PieChart) myFragmentView.findViewById(R.id.pie_chart);
         ListView listView = (ListView) myFragmentView.findViewById(R.id.type_list);
