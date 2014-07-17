@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_edit_date"
+          android:icon="@android:drawable/ic_menu_month"
+          android:title="@string/date_settings"
+          android:showAsAction="always"/>
+    <item android:id="@+id/action_settings"
+          android:icon="@android:drawable/ic_menu_manage"
+          android:title="@string/contact_list_settings"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_refresh"
+          android:icon="@android:drawable/ic_popup_sync"
+          android:title="ContactListRefresh"
+          android:showAsAction="always"/>
+</menu>

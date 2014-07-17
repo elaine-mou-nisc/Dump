@@ -18,7 +18,7 @@ import java.util.TimeZone;
 /**
  * Created by emou on 7/8/14.
  */
-public class CTContactListFragment extends Fragment {
+public class ContactListFragment extends Fragment {
 
     ArrayList<Contact> contactArrayList;
 
@@ -40,7 +40,7 @@ public class CTContactListFragment extends Fragment {
         String sortBy = getActivity().getSharedPreferences("CTContactPreferences", Context.MODE_PRIVATE).getString("sortField","name");
         String sortOrder = getActivity().getSharedPreferences("CTContactPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
 
-        CTContactDataSource contactDataSource = new CTContactDataSource(getActivity());
+        ContactDataSource contactDataSource = new ContactDataSource(getActivity());
         contactDataSource.open();
         contactArrayList = contactDataSource.getContactsByRequestCode(getArguments().getInt("requestCode"),sortBy, sortOrder);
         contactDataSource.close();
@@ -60,7 +60,7 @@ public class CTContactListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_order_settings:
-                Intent intent = new Intent(getActivity(),CTContactSettings.class);
+                Intent intent = new Intent(getActivity(),ContactSettings.class);
                 startActivity(intent);
                 return true;
             default:

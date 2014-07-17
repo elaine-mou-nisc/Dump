@@ -44,11 +44,11 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
 
         if(System.currentTimeMillis() - timeOfLastDBCheck > 3000) {
 
-            CTTileDataSource requestDataSource = new CTTileDataSource(getActivity());
+            TileDataSource requestDataSource = new TileDataSource(getActivity());
 
             JSONObject jsonObject=null;
             try {
-                jsonObject = new BackgroundJsonTask(getActivity()).execute(R.raw.contact_tile).get();
+                jsonObject = new DateOptions.BackgroundJsonTask(getActivity()).execute(R.raw.contact_tile).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -203,7 +203,7 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
     @Override
     public void onClick(View v) {
 
-        Intent intent = new Intent(getActivity(),CTDatePickerActivity.class);
+        Intent intent = new Intent(getActivity(),TrackingActivity.class);
         startActivity(intent);
     }
 }

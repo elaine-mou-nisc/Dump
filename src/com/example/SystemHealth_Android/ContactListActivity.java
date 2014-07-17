@@ -5,25 +5,24 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 /**
- * Created by emou on 6/26/14.
+ * Created by emou on 7/8/14.
  */
-public class CTRequestListActivity extends FragmentActivity {
+public class ContactListActivity extends FragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contact_tracking);
+        setContentView(R.layout.frag_wrapper);
 
-        CTRequestListFragment contactListFragment;
+        ContactListFragment contactListFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        contactListFragment = (CTRequestListFragment) fragmentManager.findFragmentById(R.id.contact_list_frag);
+        contactListFragment = (ContactListFragment) fragmentManager.findFragmentById(R.id.contact_list_frag);
         if(contactListFragment==null){
-            contactListFragment = new CTRequestListFragment();
+            contactListFragment = new ContactListFragment();
             Bundle args = new Bundle();
-            args.putString("date1",getIntent().getStringExtra("date1"));
-            args.putString("date2",getIntent().getStringExtra("date2"));
-
+            args.putInt("requestCode",getIntent().getIntExtra("requestCode",0));
+            args.putString("requestDescription",getIntent().getStringExtra("requestDescription"));
             contactListFragment.setArguments(args);
             fragmentManager.beginTransaction().replace(R.id.contact_list_frag,contactListFragment).commit();
         }

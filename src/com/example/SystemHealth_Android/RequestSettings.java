@@ -9,7 +9,7 @@ import android.widget.RadioGroup;
 /**
  * Created by emou on 6/26/14.
  */
-public class CTRequestSettings extends Activity implements RadioGroup.OnCheckedChangeListener {
+public class RequestSettings extends Activity implements RadioGroup.OnCheckedChangeListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState){

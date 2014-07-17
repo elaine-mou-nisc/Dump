@@ -32,7 +32,7 @@ public class MyActivity extends FragmentActivity {
             setContentView(R.layout.main);
         }
 
-        String status = null;
+/*        String status = null;
         JSONArray jsonArray = null;
         BackgroundJsonTask jsonTask = new BackgroundJsonTask(this);
         try {
@@ -57,25 +57,25 @@ public class MyActivity extends FragmentActivity {
             healthy = true;
         }else{
             healthy = false;
-        }
+        }*/
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        SystemHealthFragment greenFragment = (SystemHealthFragment) fragmentManager.findFragmentById(R.id.green_fragment);
-        ProgressFragment progressFragment = (ProgressFragment) fragmentManager.findFragmentById(R.id.progress_fragment);
+        /*SystemHealthFragment greenFragment = (SystemHealthFragment) fragmentManager.findFragmentById(R.id.green_fragment);
+        ProgressFragment progressFragment = (ProgressFragment) fragmentManager.findFragmentById(R.id.progress_fragment);*/
         PieFragment pieFragment = (PieFragment) fragmentManager.findFragmentById(R.id.pie_fragment);
 
-        if(greenFragment==null || progressFragment==null || pieFragment==null) {
-            greenFragment = new SystemHealthFragment(healthy);
-            progressFragment = new ProgressFragment();
+        if(/*greenFragment==null || progressFragment==null || */pieFragment==null) {
+            /*greenFragment = new SystemHealthFragment(healthy);
+            progressFragment = new ProgressFragment();*/
             pieFragment = new PieFragment();
-            fragmentManager.beginTransaction().replace(R.id.green_fragment,greenFragment).commit();
-            fragmentManager.beginTransaction().replace(R.id.progress_fragment,progressFragment).commit();
+/*            fragmentManager.beginTransaction().replace(R.id.green_fragment,greenFragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.progress_fragment,progressFragment).commit();*/
             fragmentManager.beginTransaction().replace(R.id.pie_fragment,pieFragment).commit();
         }
 
 
-        if(status.equals("Bad")){
+/*        if(status.equals("Bad")){
             ArrayList<String> stringArrayList = new ArrayList<String>(3);
             for(int i=0;i<3 && i<jsonArray.length() ;i++){
                 try {
@@ -85,7 +85,6 @@ public class MyActivity extends FragmentActivity {
                 }
             }
 
-            TextView textView;
             if(!stringArrayList.isEmpty()){
                 greenFragment.text1=stringArrayList.get(0);
             }
@@ -95,6 +94,6 @@ public class MyActivity extends FragmentActivity {
             if(stringArrayList.size()>2){
                 greenFragment.text3=stringArrayList.get(2);
             }
-        }
+        }*/
     }
 }

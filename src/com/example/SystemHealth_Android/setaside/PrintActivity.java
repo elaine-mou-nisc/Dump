@@ -1,9 +1,10 @@
-package com.example.SystemHealth_Android;
+package com.example.SystemHealth_Android.setaside;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import com.example.SystemHealth_Android.R;
 import org.w3c.dom.Text;
 
 /**

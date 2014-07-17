@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">SystemHealth_Android</string>
     <string name="contact_list_settings">ContactListSettings</string>
+    <string name="date_settings">Date Settings</string>
 </resources>

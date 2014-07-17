@@ -23,6 +23,28 @@ public class PieChartSlice implements Parcelable{
         mColor = Color.rgb((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
     }
 
+    public static final Parcelable.Creator<PieChartSlice> CREATOR = new Parcelable.Creator<PieChartSlice>(){
+        @Override
+        public PieChartSlice createFromParcel(Parcel in){
+          return new PieChartSlice(in);
+        }
+
+        @Override
+        public PieChartSlice[] newArray(int size) {
+            return new PieChartSlice[size];
+        }
+    };
+
+    public PieChartSlice(Parcel in) {
+        readFromParcel(in);
+    }
+
+    private void readFromParcel(Parcel in) {
+        mValue = in.readFloat();
+        mColor = in.readInt();
+        mSubject = in.readString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -30,6 +52,8 @@ public class PieChartSlice implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(mSubject);
+        dest.writeInt(mColor);
+        dest.writeFloat(mValue);
     }
 }

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,12 +11,12 @@ import java.util.ArrayList;
 /**
  * Created by emou on 6/27/14.
  */
-public class CTTileDataSource {
+public class TileDataSource {
     private SQLiteDatabase database;
-    private CTTileDBHelper dbHelper;
+    private TileDBHelper dbHelper;
 
-    public CTTileDataSource(Context context){
-        dbHelper = new CTTileDBHelper(context);
+    public TileDataSource(Context context){
+        dbHelper = new TileDBHelper(context);
     }
 
     public void open() throws SQLException{

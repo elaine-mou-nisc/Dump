@@ -1,4 +1,4 @@
-package com.example.SystemHealth_Android;
+package com.example.SystemHealth_Android.setaside;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.example.SystemHealth_Android.R;
+import com.example.SystemHealth_Android.setaside.PrintActivity;
 
 /**
  * Created by emou on 6/18/14.

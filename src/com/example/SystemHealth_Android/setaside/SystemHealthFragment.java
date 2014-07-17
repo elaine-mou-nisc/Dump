@@ -1,15 +1,16 @@
-package com.example.SystemHealth_Android;
+package com.example.SystemHealth_Android.setaside;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.example.SystemHealth_Android.MyActivity;
+import com.example.SystemHealth_Android.R;
 
 
 /**

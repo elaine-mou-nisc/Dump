@@ -1,14 +1,13 @@
 package com.example.SystemHealth_Android;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,11 @@ import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by emou on 7/2/14.
  */
-public class CTDatePickerFragment extends Fragment implements View.OnClickListener, TextWatcher, AdapterView.OnItemSelectedListener {
+public class DatePickerFragment extends Fragment implements View.OnClickListener, TextWatcher, AdapterView.OnItemSelectedListener {
 
     View myFragmentView;
 
@@ -164,21 +162,21 @@ public class CTDatePickerFragment extends Fragment implements View.OnClickListen
                             + c.get(Calendar.YEAR);
                 }
 
-                FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.middle_fragment);
-                if(frameLayout!=null) {
-                    CTRequestListFragment contactListFragment = new CTRequestListFragment();
-                    Bundle args = new Bundle();
-                    args.putString("date1",date1);
-                    args.putString("date2",date2);
-                    contactListFragment.setArguments(args);
-
+                FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.left_fragment);
+                getActivity().getSharedPreferences("CTDatePreferences", Context.MODE_PRIVATE).edit().
+                        putString("startDate", date1).commit();
+                getActivity().getSharedPreferences("CTDatePreferences",Context.MODE_PRIVATE).edit().
+                        putString("endDate", date2).commit();
+                if(frameLayout!=null) {//in 3-pane view
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.middle_fragment,contactListFragment).commit();
+                    RequestListFragment requestFragment = (RequestListFragment) fragmentManager.
+                            findFragmentById(R.id.left_fragment);
+                    requestFragment.timeOfLastRefresh -=5000;
+                    requestFragment.onResume();
+                    Fragment fragment = fragmentManager.findFragmentById(R.id.middle_fragment);
+                    fragmentManager.beginTransaction().remove(fragment).commit();
                 }else{//single pane layout
-                    Intent intent = new Intent(getActivity(), CTRequestListActivity.class);
-                    intent.putExtra("date1", date1);
-                    intent.putExtra("date2",date2);
-                    startActivity(intent);
+                    getActivity().finish();
                 }
                 break;
             default:

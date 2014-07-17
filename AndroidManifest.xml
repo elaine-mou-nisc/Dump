@@ -14,7 +14,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PrintActivity"
+        <activity android:name=".setaside.PrintActivity"
                   android:label="@string/app_name"
                   android:parentActivityName=".MyActivity">
             <meta-data
@@ -22,7 +22,7 @@
                   android:value=".MyActivity"
                     />
          </activity>
-        <activity android:name=".CTDatePickerActivity"
+        <activity android:name=".DatePickerActivity"
                   android:label="@string/app_name"
                   android:parentActivityName=".MyActivity">
             <meta-data
@@ -30,33 +30,33 @@
                     android:value=".MyActivity"
                     />
         </activity>
-        <activity android:name=".CTRequestListActivity"
+        <activity android:name=".TrackingActivity"
                   android:label="@string/app_name"
-                  android:parentActivityName=".CTDatePickerActivity">
+                  android:parentActivityName=".DatePickerActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ContactDatePickActivity"
                     />
         </activity>
-        <activity android:name=".CTContactListActivity"
+        <activity android:name=".ContactListActivity"
                   android:label="@string/app_name"
-                  android:parentActivityName=".CTRequestListActivity">
+                  android:parentActivityName=".TrackingActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".CTRequestListActivity"
                     />
         </activity>
-        <activity android:name=".CTRequestSettings"
+        <activity android:name=".RequestSettings"
                   android:label="@string/app_name"
-                  android:parentActivityName=".CTRequestListActivity">
+                  android:parentActivityName=".TrackingActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ContactTrackingActivity"
                     />
         </activity>
-        <activity android:name=".CTContactSettings"
+        <activity android:name=".ContactSettings"
                     android:label="@string/app_name"
-                    android:parentActivityName=".CTContactListActivity">
+                    android:parentActivityName=".ContactListActivity">
         <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ContactTrackingActivity"

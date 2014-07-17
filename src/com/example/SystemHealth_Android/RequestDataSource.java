@@ -10,13 +10,13 @@ import java.util.ArrayList;
 /**
  * Created by emou on 7/7/14.
  */
-public class CTRequestDataSource {
+public class RequestDataSource {
 
     private SQLiteDatabase database;
-    private CTRequestDBHelper dbHelper;
+    private RequestDBHelper dbHelper;
 
-    public CTRequestDataSource(Context context){
-        dbHelper = new CTRequestDBHelper(context);
+    public RequestDataSource(Context context){
+        dbHelper = new RequestDBHelper(context);
     }
 
     public void open(){

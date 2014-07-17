@@ -5,15 +5,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by emou on 7/7/14.
+ * Created by emou on 6/27/14.
  */
-public class CTRequestDBHelper extends SQLiteOpenHelper {
+public class TileDBHelper extends SQLiteOpenHelper {
+
     private static final String DATABASE_NAME = "contactTracking.db";
     private static final int DATABASE_VERSION = 1;
-    private static final String CREATE_TABLE_CONTACT = "CREATE TABLE requests (code integer primary key, " +
+    private static final String CREATE_TABLE_CONTACT = "CREATE TABLE tileRequests (_id integer primary key autoincrement, " +
             "description text not null, count integer);";
 
-    public CTRequestDBHelper(Context context){
+    public TileDBHelper(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
@@ -24,7 +25,7 @@ public class CTRequestDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS requests");
+        db.execSQL("DROP TABLE IF EXISTS tileRequests");
         onCreate(db);
     }
 }
