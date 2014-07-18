@@ -131,40 +131,10 @@ public class DatePickerFragment extends Fragment implements View.OnClickListener
                 dpd2.show();
                 break;
             case R.id.search_button:
-                String date1 = null;
-                String date2 = null;
-
-                String choice = (String) ((Spinner) getView().findViewById(R.id.date_spinner)).getSelectedItem();
-
-                if(choice.equals(DateOptions.CUSTOM.getDescription())){
-                    EditText editText = (EditText) getView().findViewById(R.id.start_date_edit);
-                    date1 = editText.getText().toString();
-                    editText = (EditText) getView().findViewById(R.id.end_date_edit);
-                    date2 = editText.getText().toString();
-                }else{
-                    Time now = new Time(Time.getCurrentTimezone());
-                    now.setToNow();
-                    date2 = (now.month+1) + "/" + now.monthDay + "/" + now.year;
-
-                    Calendar c = Calendar.getInstance();
-                    c.setTimeInMillis(System.currentTimeMillis());
-                    if(choice.equals(DateOptions.DAY.getDescription())){
-                        c.add(Calendar.DATE,-1);
-                    }else if(choice.equals(DateOptions.WEEK.getDescription())){
-                        c.add(Calendar.DATE,-7);
-                    }else if(choice.equals(DateOptions.THIRTY_DAYS.getDescription())){
-                        c.add(Calendar.DATE,-30);
-                    }else if(choice.equals(DateOptions.SIXTY_DAYS.getDescription())){
-                        c.add(Calendar.DATE,-60);
-                    }else if(choice.equals(DateOptions.NINETY_DAYS.getDescription())){
-                        c.add(Calendar.DATE,-90);
-                    }else if(choice.equals(DateOptions.YEAR.getDescription())){
-                        c.add(Calendar.DATE,-365);
-                    }
-
-                    date1 = (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/"
-                            + c.get(Calendar.YEAR);
-                }
+                EditText editText = (EditText) getView().findViewById(R.id.start_date_edit);
+                String date1 = editText.getText().toString();
+                editText = (EditText) getView().findViewById(R.id.end_date_edit);
+                String date2 = editText.getText().toString();
 
                 FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.left_fragment);
                 getActivity().getSharedPreferences("CTDatePreferences", Context.MODE_PRIVATE).edit().
@@ -262,7 +232,40 @@ public class DatePickerFragment extends Fragment implements View.OnClickListener
                     button = (Button) getView().findViewById(R.id.search_button);
                     button.setEnabled(false);
                 }
-            }else{
+            }else {
+                String date1;
+                String date2;
+                String choice = (String) parent.getItemAtPosition(position);
+
+                Time now = new Time(Time.getCurrentTimezone());
+                now.setToNow();
+                date2 = (now.month+1) + "/" + now.monthDay + "/" + now.year;
+
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(System.currentTimeMillis());
+
+                if(choice.equals(DateOptions.DAY.getDescription())){
+                    c.add(Calendar.DATE,-1);
+                }else if(choice.equals(DateOptions.WEEK.getDescription())){
+                    c.add(Calendar.DATE,-7);
+                }else if(choice.equals(DateOptions.THIRTY_DAYS.getDescription())){
+                    c.add(Calendar.DATE,-30);
+                }else if(choice.equals(DateOptions.SIXTY_DAYS.getDescription())){
+                    c.add(Calendar.DATE,-60);
+                }else if(choice.equals(DateOptions.NINETY_DAYS.getDescription())){
+                    c.add(Calendar.DATE,-90);
+                }else if(choice.equals(DateOptions.YEAR.getDescription())){
+                    c.add(Calendar.DATE,-365);
+                }
+
+                date1 = (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/"
+                        + c.get(Calendar.YEAR);
+
+                EditText editText = (EditText) getView().findViewById(R.id.start_date_edit);
+                editText.setText(date1);
+                editText = (EditText) getView().findViewById(R.id.end_date_edit);
+                editText.setText(date2);
+
                 Button button = (Button) getView().findViewById(R.id.start_date_button);
                 button.setEnabled(false);
                 button = (Button) getView().findViewById(R.id.end_date_button);

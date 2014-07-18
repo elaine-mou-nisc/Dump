@@ -51,14 +51,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ContactTrackingTile.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ContactTrackingTile.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/SystemHealth_Android/ContactTrackingTile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.30864197" vertical-offset="45" max-vertical-offset="2895">
-              <caret line="29" column="40" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2895">
+              <caret line="43" column="17" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
               <folding>
                 <element signature="e#6007#6008#0" expanded="true" />
                 <element signature="e#6036#6037#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DatePickerFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/example/SystemHealth_Android/DatePickerFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7928118" vertical-offset="2295" max-vertical-offset="4065">
+              <caret line="195" column="9" selection-start-line="195" selection-start-column="9" selection-end-line="195" selection-end-column="9" />
+              <folding>
+                <element signature="e#4507#4915#0" expanded="true" />
+                <element signature="e#4896#4897#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -108,7 +121,6 @@
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/DateOptions.java" />
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/BackgroundJsonTask.java" />
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/DatePickerActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/DatePickerFragment.java" />
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/ContactSettings.java" />
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/MyActivity.java" />
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/PieChart.java" />
@@ -125,6 +137,7 @@
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/RequestListFragment.java" />
         <option value="$PROJECT_DIR$/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/ContactTrackingTile.java" />
+        <option value="$PROJECT_DIR$/src/com/example/SystemHealth_Android/DatePickerFragment.java" />
       </list>
     </option>
   </component>
@@ -132,8 +145,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="206" />
-    <option name="y" value="61" />
+    <option name="x" value="55" />
+    <option name="y" value="22" />
     <option name="width" value="1249" />
     <option name="height" value="940" />
   </component>
@@ -537,7 +550,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="206" y="61" width="1249" height="940" extended-state="0" />
+    <frame x="55" y="22" width="1249" height="940" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -553,7 +566,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3254717" sideWeight="0.49423522" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3938679" sideWeight="0.83612806" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3938679" sideWeight="0.83612806" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900944" sideWeight="0.49960223" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902735" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -917,14 +930,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/SystemHealth_Android/DatePickerFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3975">
-          <caret line="21" column="25" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/SystemHealth_Android/MyActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="733" max-vertical-offset="1440">
@@ -1055,11 +1060,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/SystemHealth_Android/ContactTrackingTile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30864197" vertical-offset="45" max-vertical-offset="2895">
-          <caret line="29" column="40" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2895">
+          <caret line="43" column="17" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
           <folding>
             <element signature="e#6007#6008#0" expanded="true" />
             <element signature="e#6036#6037#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/SystemHealth_Android/DatePickerFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7928118" vertical-offset="2295" max-vertical-offset="4065">
+          <caret line="195" column="9" selection-start-line="195" selection-start-column="9" selection-end-line="195" selection-end-column="9" />
+          <folding>
+            <element signature="e#4507#4915#0" expanded="true" />
+            <element signature="e#4896#4897#0" expanded="true" />
           </folding>
         </state>
       </provider>
