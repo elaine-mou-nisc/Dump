@@ -4,7 +4,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-
+/*
+ * First screen; displays tile fragments to click and lead into activities
+ *
+ */
 public class MyActivity extends FragmentActivity {
 
     public static String updateTime = "11:46am June 20, 2014";
@@ -15,7 +18,7 @@ public class MyActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //selects layout based on orientation
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             setContentView(R.layout.main_landscape);
         }
@@ -54,15 +57,15 @@ public class MyActivity extends FragmentActivity {
 
         /*SystemHealthFragment greenFragment = (SystemHealthFragment) fragmentManager.findFragmentById(R.id.green_fragment);
         ProgressFragment progressFragment = (ProgressFragment) fragmentManager.findFragmentById(R.id.progress_fragment);*/
-        PieFragment pieFragment = (PieFragment) fragmentManager.findFragmentById(R.id.pie_fragment);
-
-        if(/*greenFragment==null || progressFragment==null || */pieFragment==null) {
+        ContactTrackingTile contactTrackingTile = (ContactTrackingTile) fragmentManager.findFragmentById(R.id.pie_fragment);
+        //lazy loads fragments
+        if(/*greenFragment==null || progressFragment==null || */contactTrackingTile ==null) {
             /*greenFragment = new SystemHealthFragment(healthy);
             progressFragment = new ProgressFragment();*/
-            pieFragment = new PieFragment();
+            contactTrackingTile = new ContactTrackingTile();
 /*            fragmentManager.beginTransaction().replace(R.id.green_fragment,greenFragment).commit();
             fragmentManager.beginTransaction().replace(R.id.progress_fragment,progressFragment).commit();*/
-            fragmentManager.beginTransaction().replace(R.id.pie_fragment,pieFragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.pie_fragment, contactTrackingTile).commit();
         }
 
 

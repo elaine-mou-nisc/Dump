@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
+ * Allows a user to select a date range from given options (DateOptions enum string values) or
+ * select a custom date range. Sets sharedPreferences of CTDatePreferences with values for
+ * startDate and endDate.
+ *
  * Created by emou on 7/2/14.
  */
 public class DatePickerFragment extends Fragment implements View.OnClickListener, TextWatcher, AdapterView.OnItemSelectedListener {

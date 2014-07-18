@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
+ * Displays Contacts with given requestCode from fragment's args.
+ *
  * Created by emou on 7/8/14.
  */
 public class ContactListFragment extends Fragment {
@@ -36,7 +38,7 @@ public class ContactListFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
+        //retrieve and display ordered list
         String sortBy = getActivity().getSharedPreferences("CTContactPreferences", Context.MODE_PRIVATE).getString("sortField","name");
         String sortOrder = getActivity().getSharedPreferences("CTContactPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
 
@@ -60,6 +62,7 @@ public class ContactListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_order_settings:
+                //option to start new ContactSettings activity to modify order
                 Intent intent = new Intent(getActivity(),ContactSettings.class);
                 startActivity(intent);
                 return true;
@@ -68,6 +71,7 @@ public class ContactListFragment extends Fragment {
         }
     }
 
+    //adapts a list of Contacts for display in listView
     private class ContactAdapter extends ArrayAdapter<Contact> {
 
         ArrayList<Contact> contacts;

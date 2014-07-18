@@ -9,6 +9,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
+ * View that draws a proportioned pie chart given a list of PieChartSlices to draw data and colors from
+ *
  * Created by emou on 6/19/14.
  */
 public class PieChart extends View {
@@ -24,6 +26,7 @@ public class PieChart extends View {
     private float centerY;
     private float radius;
 
+    //redraws chart on change of given data
     public void setSliceArrayList(ArrayList<PieChartSlice> inSliceList){
         sliceArrayList = inSliceList;
 

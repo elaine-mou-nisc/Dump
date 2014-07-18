@@ -6,6 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
 
 /**
+ * Contact Tracking activity; displays three vertical columns in large devices for requests, contacts, and
+ * date picking, from left to right. On small screens, loads a single fragment for each activity screen, with
+ * requests first displayed.
+ *
  * Created by emou on 6/26/14.
  */
 public class TrackingActivity extends FragmentActivity {
@@ -15,23 +19,18 @@ public class TrackingActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_activity);
 
-        RequestListFragment contactListFragment;
+        RequestListFragment requestListFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.left_fragment);
 
-        if(frameLayout!=null){//three-pane layout
-            contactListFragment = (RequestListFragment) fragmentManager.findFragmentById(R.id.left_fragment);
-
-            if(contactListFragment==null) {
-                contactListFragment = new RequestListFragment();
-                Bundle args = new Bundle();
-                args.putString("date1", getIntent().getStringExtra("date1"));
-                args.putString("date2", getIntent().getStringExtra("date2"));
-
-                contactListFragment.setArguments(args);
-                fragmentManager.beginTransaction().replace(R.id.left_fragment, contactListFragment).commit();
+        if(frameLayout!=null){//if in three-pane layout
+            requestListFragment = (RequestListFragment) fragmentManager.findFragmentById(R.id.left_fragment);
+            //lazy load RequestListFragment into leftmost third, passing it dates
+            if(requestListFragment==null) {
+                requestListFragment = new RequestListFragment();
+                fragmentManager.beginTransaction().replace(R.id.left_fragment, requestListFragment).commit();
             }
-
+            //lazy load DatePickerFragment into rightmost third
             if(findViewById(R.id.right_fragment)!=null){
                 DatePickerFragment dateFragment = (DatePickerFragment) fragmentManager.findFragmentById(R.id.right_fragment);
 
@@ -41,18 +40,13 @@ public class TrackingActivity extends FragmentActivity {
                 }
             }
 
-        }else if(findViewById(R.id.contact_list_frag)!=null) {//single pane layout
+        }else if(findViewById(R.id.contact_list_frag)!=null) {//if in single pane layout
 
-            contactListFragment = (RequestListFragment) fragmentManager.findFragmentById(R.id.contact_list_frag);
-
-            if(contactListFragment==null) {
-                contactListFragment = new RequestListFragment();
-                Bundle args = new Bundle();
-                args.putString("date1", getIntent().getStringExtra("date1"));
-                args.putString("date2", getIntent().getStringExtra("date2"));
-
-                contactListFragment.setArguments(args);
-                fragmentManager.beginTransaction().replace(R.id.contact_list_frag, contactListFragment).commit();
+            requestListFragment = (RequestListFragment) fragmentManager.findFragmentById(R.id.contact_list_frag);
+            //lazy load RequestListFragment into only FrameLayout
+            if(requestListFragment==null) {
+                requestListFragment = new RequestListFragment();
+                fragmentManager.beginTransaction().replace(R.id.contact_list_frag, requestListFragment).commit();
             }
         }
     }

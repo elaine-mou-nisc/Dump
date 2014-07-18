@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * Assists data source in executing correct SQLite commands for data for the Contact Tracking clickable tile,
+ * which displays brief data and a chart.
+ *
  * Created by emou on 6/27/14.
  */
 public class TileDBHelper extends SQLiteOpenHelper {

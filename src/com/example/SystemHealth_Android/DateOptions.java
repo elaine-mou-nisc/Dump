@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * Enumeration for user choices for date selection
+ *
  * Created by emou on 7/14/14.
  */
 public enum DateOptions {
@@ -28,42 +30,5 @@ public enum DateOptions {
     @Override
     public String toString(){
         return description;
-    }
-
-    /**
-     * Created by emou on 6/24/14.
-     */
-    public static class BackgroundJsonTask extends AsyncTask<Integer,Void,JSONObject> {
-
-        private Activity mActivity;
-
-        public BackgroundJsonTask (Activity activity){
-            mActivity = activity;
-        }
-
-        @Override
-        protected JSONObject doInBackground(Integer... ids) {
-            try{
-                return findJson(ids[0]);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        private JSONObject findJson(Integer id) throws IOException, JSONException {
-
-            InputStream is = mActivity.getResources().openRawResource(id);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder stringBuilder = new StringBuilder(1024);
-            String line;
-
-            while((line = bufferedReader.readLine())!=null){
-                stringBuilder.append(line);
-            }
-            line = stringBuilder.toString();
-
-            return new JSONObject(line);
-        }
     }
 }

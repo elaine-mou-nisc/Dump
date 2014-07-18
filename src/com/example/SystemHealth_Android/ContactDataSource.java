@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 /**
+ * Data source for Contacts in Contact Tracking
+ *
  * Created by emou on 7/7/14.
  */
 public class ContactDataSource {
@@ -27,7 +29,7 @@ public class ContactDataSource {
         dbHelper.close();
     }
 
-    public ArrayList<Contact> getAllContacts(String sortField, String sortOrder){
+/*    public ArrayList<Contact> getAllContacts(String sortField, String sortOrder){
         ArrayList<Contact> contacts = new ArrayList<Contact>();
 
         String query = "SELECT * FROM contacts ORDER BY " + sortField + " " + sortOrder;
@@ -46,8 +48,9 @@ public class ContactDataSource {
         cursor.close();
 
         return contacts;
-    }
+    }*/
 
+    //returns ordered ArrayList of Contacts associated with the given request code
     public ArrayList<Contact> getContactsByRequestCode(int requestCode, String sortField, String sortOrder){
         ArrayList<Contact> contacts = new ArrayList<Contact>();
 
@@ -69,7 +72,7 @@ public class ContactDataSource {
         return contacts;
     }
 
-    public ArrayList<Contact> getContactsByDate(long startDate, long endDate){
+/*    public ArrayList<Contact> getContactsByDate(long startDate, long endDate){
         ArrayList<Contact> contacts = new ArrayList<Contact>();
 
         String query = "SELECT * FROM contacts WHERE dateCreated > " + startDate + " AND dateCreated < " + endDate +
@@ -88,12 +91,14 @@ public class ContactDataSource {
         }
         cursor.close();
         return contacts;
-    }
+    }*/
 
-    public void clearRequestsDB(){
+
+    public void clearContactsDB(){
         dbHelper.onUpgrade(database,0,1);
     }
 
+    //add given list of contacts to SQLite database
     public int addToContactList(ArrayList<Contact> contacts){
         int count=0;
         int numberOfContacts = contacts.size();

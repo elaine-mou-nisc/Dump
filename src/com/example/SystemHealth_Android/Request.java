@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 /**
+ * Data type associated with Contact Tracking requests
+ *
  * Created by emou on 6/27/14.
  */
 public class Request implements Parcelable {

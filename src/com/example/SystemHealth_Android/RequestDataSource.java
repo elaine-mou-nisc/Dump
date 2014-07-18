@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 /**
+ * Data source for Requests in Contact Tracking
+ *
  * Created by emou on 7/7/14.
  */
 public class RequestDataSource {
@@ -27,6 +29,7 @@ public class RequestDataSource {
         dbHelper.close();
     }
 
+    //retrieves all requests with preferred sorting
     public ArrayList<Request> getRequests(String sortField, String sortOrder){
         ArrayList<Request> requests = new ArrayList<Request>();
 
@@ -54,6 +57,7 @@ public class RequestDataSource {
         dbHelper.onUpgrade(database,0,1);
     }
 
+    //adds given list of Requests to the SQLite database
     public int addToRequestList(ArrayList<Request> requests){
         int count=0;
         int numberOfRequests = requests.size();

@@ -5,6 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * Data type for pie chart data item
+ * Contains a name, decimal value for representation, and color to be shown
+ *
  * Created by emou on 6/19/14.
  */
 public class PieChartSlice implements Parcelable{

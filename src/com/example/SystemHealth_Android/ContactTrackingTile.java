@@ -2,6 +2,8 @@ package com.example.SystemHealth_Android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,18 +19,29 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * Tile fragment to be clicked on to lead into ContactTracking
+ * Displays top request types and associated pie chart on front.
+ *
  * Created by emou on 6/20/14.
  */
-public class PieFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ContactTrackingTile extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     ArrayList<PieChartSlice> sliceArrayList;
     ArrayList<Request> requestArrayList;
     int limit = 3;
     long timeOfLastDBCheck=0;
+    int[] colors;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Resources res = getActivity().getResources();
+
+        colors = new int[] {res.getColor(R.color.light_red),res.getColor(R.color.light_orange),
+                res.getColor(R.color.dark_gold),res.getColor(R.color.dark_green),
+                res.getColor(R.color.light_blue),res.getColor(R.color.dark_blue),
+                res.getColor(R.color.light_purple),res.getColor(R.color.gray)};
 
         View myFragmentView = inflater.inflate(R.layout.pie_tile,container,false);
 
@@ -42,13 +55,14 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
 
         int size;
 
+        //only make update if enough time has elapsed since last refresh, not on any rotation
         if(System.currentTimeMillis() - timeOfLastDBCheck > 3000) {
 
             TileDataSource requestDataSource = new TileDataSource(getActivity());
 
             JSONObject jsonObject=null;
             try {
-                jsonObject = new DateOptions.BackgroundJsonTask(getActivity()).execute(R.raw.contact_tile).get();
+                jsonObject = new BackgroundJsonTask(getActivity()).execute(R.raw.contact_tile).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -59,7 +73,7 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
                 try {
                     JSONArray resultsArray = jsonObject.getJSONArray("results");
                     int resultsLength = resultsArray.length();
-
+                    //reset database of Requests based off of JSON
                     requestDataSource.open();
                     requestDataSource.clearRequestsDB();
                     for(int i=0;i<resultsLength;i++){
@@ -82,7 +96,7 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
                     e.printStackTrace();
                 }
             }
-
+            //retrieve top requests and sum the amount of other requests
             int othersCount=0;
             try {
                 requestDataSource.open();
@@ -97,41 +111,21 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
 
             size = requestArrayList.size();
 
-            if(sliceArrayList==null) {
-                sliceArrayList = new ArrayList<PieChartSlice>();
-            }
-
-            if(sliceArrayList.size()<size){
-                while(sliceArrayList.size()<size){
-                    sliceArrayList.add(new PieChartSlice(1));
-                }
-            }else if(sliceArrayList.size()>size){
-                while(sliceArrayList.size()>size){
-                    sliceArrayList.remove(sliceArrayList.size()-1);
-                }
-            }
-
-            size = sliceArrayList.size();
-
+            sliceArrayList = new ArrayList<PieChartSlice>(size);
+            //fill sliceArrayList with values of top requests and Other
             for(int i=0;i<size;i++){
-                sliceArrayList.get(i).mValue = requestArrayList.get(i).mCount;
+                sliceArrayList.add(new PieChartSlice(requestArrayList.get(i).mCount,colors[i%8]));
                 sliceArrayList.get(i).mSubject = requestArrayList.get(i).mDescription;
             }
         }
-
+        //draw pieChart based on slices list
         pieChart.setSliceArrayList(sliceArrayList);
-
+        //build array of text associated with slices
         ArrayList<String> textArray = new ArrayList<String>();
-
         for(int i=0;i<sliceArrayList.size();i++){
             textArray.add((int)sliceArrayList.get(i).mValue + " " + sliceArrayList.get(i).mSubject);
         }
-
-        int[] colors = new int[sliceArrayList.size()];
-        for(int i=0;i<colors.length;i++){
-            colors[i] = sliceArrayList.get(i).mColor;
-        }
-
+        //display text with colors corresponding to pie chart
         ArrayAdapter adapter = new ColorTextAdapter(getActivity(),R.layout.small_list_textview,textArray,colors);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
@@ -149,7 +143,7 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         onClick(view);
     }
-
+    //adapter displays colored text given strings and colors for each text item
     private class ColorTextAdapter extends ArrayAdapter {
 
         int[] colorsArray;
@@ -186,15 +180,15 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
             }else if(stringArray!=null){
                 textView.setText(stringArray[position]);
             }
-            textView.setTextColor(colorsArray[position]);
+            textView.setTextColor(colorsArray[position%8]);
             return convertView;
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
+        //save current lists of data, slices
         savedInstanceState.putParcelableArrayList("sliceArrayList",sliceArrayList);
-
         savedInstanceState.putParcelableArrayList("requestArrayList", requestArrayList);
 
         super.onSaveInstanceState(savedInstanceState);
@@ -202,7 +196,7 @@ public class PieFragment extends Fragment implements View.OnClickListener, Adapt
 
     @Override
     public void onClick(View v) {
-
+        //open Contact Tracking activity
         Intent intent = new Intent(getActivity(),TrackingActivity.class);
         startActivity(intent);
     }

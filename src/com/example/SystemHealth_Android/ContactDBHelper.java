@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * Helper class to execute proper commands with Contact SQLite Database
+ *
  * Created by emou on 7/7/14.
  */
 public class ContactDBHelper extends SQLiteOpenHelper {

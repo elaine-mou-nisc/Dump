@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
+ * Data source for Contact Tracking tile and its pie chart and associated text
+ *
  * Created by emou on 6/27/14.
  */
 public class TileDataSource {
@@ -27,6 +29,7 @@ public class TileDataSource {
         dbHelper.close();
     }
 
+    //get top <limit> Requests from the database
     public ArrayList<Request> getTopRequests(int limit){
         ArrayList<Request> requests = new ArrayList<Request>();
 
@@ -49,6 +52,7 @@ public class TileDataSource {
         return requests;
     }
 
+    //sum up how many requests there are that are not included in the top <topNumber> types of request
     public int getOthersCount(int topNumber){
         int count=0;
 
@@ -69,6 +73,7 @@ public class TileDataSource {
         dbHelper.onUpgrade(database,0,1);
     }
 
+    //add a single request to the database
     public boolean addRequest (Request request){
         boolean success = false;
 

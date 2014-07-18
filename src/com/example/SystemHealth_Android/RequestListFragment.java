@@ -20,6 +20,10 @@ import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * Displays sorted list of Requests and their amounts. On small screens list is expandable, displaying
+ * associated contacts underneath each request heading. On large screens clicking a list item generates
+ * a new fragment in the next column to display contacts.
+ *
  * Created by emou on 6/26/14.
  */
 public class RequestListFragment extends Fragment implements AdapterView.OnItemClickListener{
@@ -38,8 +42,8 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
             initList();
             refreshList();
             TextView textView = (TextView) myFragmentView.findViewById(R.id.date_display);
-            textView.setText("Start: " + getActivity().getSharedPreferences("CTDatePreferences",Context.MODE_PRIVATE).getString("startDate","----") + "\n" +
-                    "End: " + getActivity().getSharedPreferences("CTDatePreferences", Context.MODE_PRIVATE).getString("endDate","----"));
+            textView.setText("Start: " + getActivity().getSharedPreferences("CTDatePreferences",Context.MODE_PRIVATE).getString("startDate",null) + "\n" +
+                    "End: " + getActivity().getSharedPreferences("CTDatePreferences", Context.MODE_PRIVATE).getString("endDate",null));
             timeOfLastRefresh = System.currentTimeMillis();
         }
 
@@ -53,6 +57,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(parent==myFragmentView.findViewById(R.id.request_list)){
+            //creates new ContactListFragment on three-pane display
             if(getActivity().findViewById(R.id.middle_fragment)!=null){
                 ContactListFragment contactListFragment = new ContactListFragment();
                 Bundle args = new Bundle();
@@ -61,12 +66,12 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
                 contactListFragment.setArguments(args);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.middle_fragment,contactListFragment)
                         .commit();
-            }else {
+            }/*else {
                 Intent intent = new Intent(getActivity(), ContactListActivity.class);
                 intent.putExtra("requestCode",requestArrayList.get(position).mCode);
                 intent.putExtra("requestDescription",requestArrayList.get(position).mDescription);
                 startActivity(intent);
-            }
+            }*/
         }
     }
 
@@ -74,6 +79,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
     public void onResume(){
         super.onResume();
 
+        //refresh data if enough time has elapsed
         if((System.currentTimeMillis() - timeOfLastRefresh) > 5000) {
             initList();
             refreshList();
@@ -86,10 +92,10 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
     }
 
     private void initList(){
-
+        //retrieve a JSONobject (to be replaced with network call), and set database information from it
         JSONObject jsonObject = null;
         try {
-            jsonObject = new DateOptions.BackgroundJsonTask(getActivity()).execute(R.raw.contact_detail).get();
+            jsonObject = new BackgroundJsonTask(getActivity()).execute(R.raw.contact_detail).get();
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
@@ -112,11 +118,11 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
         RequestDataSource requestDataSource = new RequestDataSource(getActivity());
         String sortBy = getActivity().getSharedPreferences("CTRequestPreferences", Context.MODE_PRIVATE).getString("sortField","description");
         String sortOrder = getActivity().getSharedPreferences("CTRequestPreferences", Context.MODE_PRIVATE).getString("sortOrder", "ASC");
-
+        //set requestArrayList to sorted information from database
         requestDataSource.open();
         requestArrayList = requestDataSource.getRequests(sortBy, sortOrder);
         requestDataSource.close();
-
+        //if expandable list, build string array and map of strings to contact lists to display requests and contacts
         if(myFragmentView.findViewById(R.id.request_expandable)!=null) {//single pane, using expandable list
             String contactSortBy = getActivity().getSharedPreferences("CTContactPreferences", Context.MODE_PRIVATE).getString("sortField", "dateCreated");
             String contactSortOrder = getActivity().getSharedPreferences("CTContactPreferences", Context.MODE_PRIVATE).getString("sortOrder", "DESC");
@@ -136,6 +142,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
             ExpandableListView expandableView = (ExpandableListView) myFragmentView.findViewById(R.id.request_expandable);
             expandableView.setAdapter(adapter);
         }else if(myFragmentView.findViewById(R.id.request_list)!=null){
+            //otherwise only display the requests in a simple list with their amounts
             ListView listView = (ListView) myFragmentView.findViewById(R.id.request_list);
             listView.setAdapter(new RequestAdapter(getActivity(),R.layout.twotext_listitem,requestArrayList));
         }
@@ -151,6 +158,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
             ArrayList<Contact> contactList = null;
 
             try {
+                //build list of requests and list of contacts from JSON data
                 if(jsonObject.has("results")) {
                     JSONArray jsonRequestsArray = jsonObject.getJSONArray("results");
                     requestList = new ArrayList<Request>();
@@ -182,15 +190,16 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
                 e.printStackTrace();
             }
 
+            //save new request list to cleared database
             RequestDataSource requestDataSource = new RequestDataSource(getActivity());
             requestDataSource.open();
             requestDataSource.clearRequestsDB();
             requestDataSource.addToRequestList(requestList);
             requestDataSource.close();
-
+            //save new contact list to cleared database
             ContactDataSource contactDataSource = new ContactDataSource(getActivity());
             contactDataSource.open();
-            contactDataSource.clearRequestsDB();
+            contactDataSource.clearContactsDB();
             contactDataSource.addToContactList(contactList);
             contactDataSource.close();
 
@@ -201,6 +210,8 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         inflater = getActivity().getMenuInflater();
+        //if on small screen, load menu with option to access date picker
+        //(large screen already has date picker shown)
         if(getActivity().findViewById(R.id.right_fragment)==null){
             inflater.inflate(R.menu.ct_date_actions,menu);
         }else {
@@ -214,13 +225,13 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
         switch(item.getItemId()){
             case R.id.action_edit_date:
                 timeOfLastRefresh -= 5000;
-
+                //allow fragment to be refreshed upon returning from choosing a new date
                 Intent intent = new Intent(getActivity(),DatePickerActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_settings:
-                timeOfLastRefresh -= 5000;//allows page to refresh upon changing settings/order
-
+                timeOfLastRefresh -= 5000;
+                //allows fragment to refresh upon changing settings/order
                 intent = new Intent(getActivity(),RequestSettings.class);
                 startActivity(intent);
                 return true;
@@ -236,7 +247,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    //adapts requests into name-and-amount single-line list items
     private class RequestAdapter extends ArrayAdapter<Request> {
 
         ArrayList<Request> requests;
@@ -269,6 +280,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
         }
     }
 
+    //takes list of requests and map of request names to contacts to display in expandable list
     private class MyExpandableListAdapter extends BaseExpandableListAdapter{
         ArrayList<Request> requestsList;
         HashMap<String,ArrayList<Contact>> contactList;
@@ -319,7 +331,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.twotext_listitem,parent,false);
             }
-
+            //displays request name and amount
             if(requestsList!=null){
                 Request request = requestsList.get(groupPosition);
 
@@ -338,7 +350,7 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.contact_listitem, parent, false);
             }
-
+            //displays contact information
             if(contactList !=null) {
                 Contact contact = contactList.get(requestsList.get(groupPosition).mDescription).get(childPosition);
 

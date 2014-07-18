@@ -8,5 +8,12 @@
     <color name="focus_red">#C67171</color>
     <color name="pressed_red">#802A2A</color>
 
+    <color name="light_red">#AF4035</color>
+    <color name="light_orange">#E47833</color>
+    <color name="dark_gold">#CD950C</color>
+    <color name="dark_green">#636F57</color>
     <color name="light_blue">#96CDCD</color>
+    <color name="dark_blue">#00688B</color>
+    <color name="light_purple">#9F5F9F</color>
+    <color name="gray">#666666</color>
 </resources>

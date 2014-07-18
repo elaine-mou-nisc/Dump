@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * Assists RequestDataSource in executing correct SQLite commands
+ *
  * Created by emou on 7/7/14.
  */
 public class RequestDBHelper extends SQLiteOpenHelper {
