@@ -136,19 +136,20 @@ public class DatePickerFragment extends Fragment implements View.OnClickListener
                 editText = (EditText) getView().findViewById(R.id.end_date_edit);
                 String date2 = editText.getText().toString();
 
-                FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.left_fragment);
                 getActivity().getSharedPreferences("CTDatePreferences", Context.MODE_PRIVATE).edit().
                         putString("startDate", date1).commit();
                 getActivity().getSharedPreferences("CTDatePreferences",Context.MODE_PRIVATE).edit().
                         putString("endDate", date2).commit();
-                if(frameLayout!=null) {//in 3-pane view
+                if(getActivity().findViewById(R.id.middle_fragment)!=null) {//in 3-pane view
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     RequestListFragment requestFragment = (RequestListFragment) fragmentManager.
                             findFragmentById(R.id.left_fragment);
                     requestFragment.timeOfLastRefresh -=5000;
                     requestFragment.onResume();
                     Fragment fragment = fragmentManager.findFragmentById(R.id.middle_fragment);
-                    fragmentManager.beginTransaction().remove(fragment).commit();
+                    if(fragment!=null) {
+                        fragmentManager.beginTransaction().remove(fragment).commit();
+                    }
                 }else{//single pane layout
                     getActivity().finish();
                 }
@@ -159,129 +160,129 @@ public class DatePickerFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
+         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+         }
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
+         public void onTextChanged(CharSequence s, int start, int before, int count) {
+         }
     @Override
-    public void afterTextChanged(Editable s) {
-        Spinner spinner = (Spinner) getView().findViewById(R.id.date_spinner);
-        /* if choosing a custom date range */
-        if(spinner.getSelectedItem().equals(DateOptions.CUSTOM.getDescription())) {
-        /* check that start date precedes end date; valid date range */
-            EditText editText1 = (EditText) getView().findViewById(R.id.start_date_edit);
-            EditText editText2 = (EditText) getView().findViewById(R.id.end_date_edit);
+         public void afterTextChanged(Editable s) {
+             Spinner spinner = (Spinner) getView().findViewById(R.id.date_spinner);
+             /* if choosing a custom date range */
+             if(spinner.getSelectedItem().equals(DateOptions.CUSTOM.getDescription())) {
+             /* check that start date precedes end date; valid date range */
+                 EditText editText1 = (EditText) getView().findViewById(R.id.start_date_edit);
+                 EditText editText2 = (EditText) getView().findViewById(R.id.end_date_edit);
 
-            boolean startIsBeforeEnd = false;
-            if (editText1.getText().toString().length() > 0 && editText2.getText().toString().length() > 0) {
-                String[] date1 = editText1.getText().toString().split("/");
-                String[] date2 = editText2.getText().toString().split("/");
-                if (Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
-                    startIsBeforeEnd = false;
-                } else if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
-                    startIsBeforeEnd = true;
-                } else if (Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
-                    startIsBeforeEnd = false;
-                } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
-                    startIsBeforeEnd = true;
-                } else if (Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
-                    startIsBeforeEnd = false;
-                } else {
-                    startIsBeforeEnd = true;
-                }
-            }
-            //only allow search for valid date ranges
-            Button button = (Button) getView().findViewById(R.id.search_button);
-            if (!startIsBeforeEnd) {
-                button.setEnabled(false);
-            } else {
-                button.setEnabled(true);
-            }
-        }
-    }
-
-    @Override
-         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-             if(parent==getView().findViewById(R.id.date_spinner)){
-                 if(parent.getItemAtPosition(position).equals(DateOptions.CUSTOM.getDescription())){
-                     Button button = (Button) getView().findViewById(R.id.start_date_button);
-                     button.setEnabled(true);
-                     button = (Button) getView().findViewById(R.id.end_date_button);
-                     button.setEnabled(true);
-
-                     EditText editText1 = (EditText) getView().findViewById(R.id.start_date_edit);
-                     EditText editText2 = (EditText) getView().findViewById(R.id.end_date_edit);
-
-                     boolean startIsBeforeEnd = false;
-
-                     if(editText1.getText().toString().length() > 0 && editText2.getText().toString().length()>0) {
-                         String[] date1 = editText1.getText().toString().split("/");
-                         String[] date2 = editText2.getText().toString().split("/");
-                         if (Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
-                             startIsBeforeEnd = false;
-                         } else if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
-                             startIsBeforeEnd = true;
-                         } else if (Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
-                             startIsBeforeEnd = false;
-                         } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
-                             startIsBeforeEnd = true;
-                         } else if (Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
-                             startIsBeforeEnd = false;
-                         } else {
-                             startIsBeforeEnd = true;
-                         }
+                 boolean startIsBeforeEnd = false;
+                 if (editText1.getText().toString().length() > 0 && editText2.getText().toString().length() > 0) {
+                     String[] date1 = editText1.getText().toString().split("/");
+                     String[] date2 = editText2.getText().toString().split("/");
+                     if (Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
+                         startIsBeforeEnd = false;
+                     } else if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
+                         startIsBeforeEnd = true;
+                     } else if (Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
+                         startIsBeforeEnd = false;
+                     } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
+                         startIsBeforeEnd = true;
+                     } else if (Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
+                         startIsBeforeEnd = false;
+                     } else {
+                         startIsBeforeEnd = true;
                      }
-
-                     if(!startIsBeforeEnd) {
-                         button = (Button) getView().findViewById(R.id.search_button);
-                         button.setEnabled(false);
-                     }
-                 }else {
-                     String date1;
-                     String date2;
-                     String choice = (String) parent.getItemAtPosition(position);
-
-                     Time now = new Time(Time.getCurrentTimezone());
-                     now.setToNow();
-                     date2 = (now.month+1) + "/" + now.monthDay + "/" + now.year;
-
-                     Calendar c = Calendar.getInstance();
-                     c.setTimeInMillis(System.currentTimeMillis());
-
-                     if(choice.equals(DateOptions.DAY.getDescription())){
-                         c.add(Calendar.DATE,-1);
-                     }else if(choice.equals(DateOptions.WEEK.getDescription())){
-                         c.add(Calendar.DATE,-7);
-                     }else if(choice.equals(DateOptions.THIRTY_DAYS.getDescription())){
-                         c.add(Calendar.DATE,-30);
-                     }else if(choice.equals(DateOptions.SIXTY_DAYS.getDescription())){
-                         c.add(Calendar.DATE,-60);
-                     }else if(choice.equals(DateOptions.NINETY_DAYS.getDescription())){
-                         c.add(Calendar.DATE,-90);
-                     }else if(choice.equals(DateOptions.YEAR.getDescription())){
-                         c.add(Calendar.DATE,-365);
-                     }
-
-                     date1 = (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/"
-                             + c.get(Calendar.YEAR);
-
-                     EditText editText = (EditText) getView().findViewById(R.id.start_date_edit);
-                     editText.setText(date1);
-                     editText = (EditText) getView().findViewById(R.id.end_date_edit);
-                     editText.setText(date2);
-
-                     Button button = (Button) getView().findViewById(R.id.start_date_button);
+                 }
+                 //only allow search for valid date ranges
+                 Button button = (Button) getView().findViewById(R.id.search_button);
+                 if (!startIsBeforeEnd) {
                      button.setEnabled(false);
-                     button = (Button) getView().findViewById(R.id.end_date_button);
-                     button.setEnabled(false);
-                     button = (Button) getView().findViewById(R.id.search_button);
+                 } else {
                      button.setEnabled(true);
                  }
              }
          }
-    @Override
-         public void onNothingSelected(AdapterView<?> parent) {
 
-         }
+    @Override
+              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                  if(parent==getView().findViewById(R.id.date_spinner)){
+                      if(parent.getItemAtPosition(position).equals(DateOptions.CUSTOM.getDescription())){
+                          Button button = (Button) getView().findViewById(R.id.start_date_button);
+                          button.setEnabled(true);
+                          button = (Button) getView().findViewById(R.id.end_date_button);
+                          button.setEnabled(true);
+
+                          EditText editText1 = (EditText) getView().findViewById(R.id.start_date_edit);
+                          EditText editText2 = (EditText) getView().findViewById(R.id.end_date_edit);
+
+                          boolean startIsBeforeEnd = false;
+
+                          if(editText1.getText().toString().length() > 0 && editText2.getText().toString().length()>0) {
+                              String[] date1 = editText1.getText().toString().split("/");
+                              String[] date2 = editText2.getText().toString().split("/");
+                              if (Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
+                                  startIsBeforeEnd = false;
+                              } else if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
+                                  startIsBeforeEnd = true;
+                              } else if (Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
+                                  startIsBeforeEnd = false;
+                              } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
+                                  startIsBeforeEnd = true;
+                              } else if (Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
+                                  startIsBeforeEnd = false;
+                              } else {
+                                  startIsBeforeEnd = true;
+                              }
+                          }
+
+                          if(!startIsBeforeEnd) {
+                              button = (Button) getView().findViewById(R.id.search_button);
+                              button.setEnabled(false);
+                          }
+                      }else {
+                          String date1;
+                          String date2;
+                          String choice = (String) parent.getItemAtPosition(position);
+
+                          Time now = new Time(Time.getCurrentTimezone());
+                          now.setToNow();
+                          date2 = (now.month+1) + "/" + now.monthDay + "/" + now.year;
+
+                          Calendar c = Calendar.getInstance();
+                          c.setTimeInMillis(System.currentTimeMillis());
+
+                          if(choice.equals(DateOptions.DAY.getDescription())){
+                              c.add(Calendar.DATE,-1);
+                          }else if(choice.equals(DateOptions.WEEK.getDescription())){
+                              c.add(Calendar.DATE,-7);
+                          }else if(choice.equals(DateOptions.THIRTY_DAYS.getDescription())){
+                              c.add(Calendar.DATE,-30);
+                          }else if(choice.equals(DateOptions.SIXTY_DAYS.getDescription())){
+                              c.add(Calendar.DATE,-60);
+                          }else if(choice.equals(DateOptions.NINETY_DAYS.getDescription())){
+                              c.add(Calendar.DATE,-90);
+                          }else if(choice.equals(DateOptions.YEAR.getDescription())){
+                              c.add(Calendar.DATE,-365);
+                          }
+
+                          date1 = (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/"
+                                  + c.get(Calendar.YEAR);
+
+                          EditText editText = (EditText) getView().findViewById(R.id.start_date_edit);
+                          editText.setText(date1);
+                          editText = (EditText) getView().findViewById(R.id.end_date_edit);
+                          editText.setText(date2);
+
+                          Button button = (Button) getView().findViewById(R.id.start_date_button);
+                          button.setEnabled(false);
+                          button = (Button) getView().findViewById(R.id.end_date_button);
+                          button.setEnabled(false);
+                          button = (Button) getView().findViewById(R.id.search_button);
+                          button.setEnabled(true);
+                      }
+                  }
+              }
+    @Override
+              public void onNothingSelected(AdapterView<?> parent) {
+
+              }
 }
