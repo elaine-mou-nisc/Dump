@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.*;
 import android.widget.*;
 import org.json.JSONArray;
@@ -237,9 +238,16 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
                 return true;
             case R.id.action_refresh:
                 long currentTime = System.currentTimeMillis();
+                //if enough time has elapsed since last refresh
                 if((currentTime - timeOfLastRefresh) > 5000) {
-                    initList();
-                    refreshList();
+                    //clear middle fragment in case of three-pane view
+                    if(getActivity().findViewById(R.id.middle_fragment)!=null){
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        Fragment fragment = fragmentManager.findFragmentById(R.id.middle_fragment);
+                        fragmentManager.beginTransaction().remove(fragment).commit();
+                    }
+                    initList();//reset database content
+                    refreshList();//reset fragment lists' content and display them
                     timeOfLastRefresh = currentTime;
                 }
                 return true;
@@ -248,138 +256,138 @@ public class RequestListFragment extends Fragment implements AdapterView.OnItemC
         }
     }
     //adapts requests into name-and-amount single-line list items
-    private class RequestAdapter extends ArrayAdapter<Request> {
+         private class RequestAdapter extends ArrayAdapter<Request> {
 
-        ArrayList<Request> requests;
+             ArrayList<Request> requests;
 
-        public RequestAdapter(Context context, int resource, ArrayList<Request> objects) {
-            super(context, resource, objects);
-            requests = objects;
-        }
+             public RequestAdapter(Context context, int resource, ArrayList<Request> objects) {
+                 super(context, resource, objects);
+                 requests = objects;
+             }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView==null) {
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.twotext_listitem, parent, false);
-            }
+             @Override
+             public View getView(int position, View convertView, ViewGroup parent) {
+                 if(convertView==null) {
+                     LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                     convertView = inflater.inflate(R.layout.twotext_listitem, parent, false);
+                 }
 
-            if(requests !=null) {
-                TextView textView = (TextView) convertView.findViewById(R.id.text1);
-                textView.setText(requests.get(position).mDescription);
-                textView = (TextView) convertView.findViewById(R.id.text2);
-                textView.setText("" + requests.get(position).mCount);
-            }
+                 if(requests !=null) {
+                     TextView textView = (TextView) convertView.findViewById(R.id.text1);
+                     textView.setText(requests.get(position).mDescription);
+                     textView = (TextView) convertView.findViewById(R.id.text2);
+                     textView.setText("" + requests.get(position).mCount);
+                 }
 
-            return convertView;
-        }
+                 return convertView;
+             }
 
-        @Override
-        public int getCount(){
-            return requests.size();
-        }
-    }
+             @Override
+             public int getCount(){
+                 return requests.size();
+             }
+         }
 
     //takes list of requests and map of request names to contacts to display in expandable list
-    private class MyExpandableListAdapter extends BaseExpandableListAdapter{
-        ArrayList<Request> requestsList;
-        HashMap<String,ArrayList<Contact>> contactList;
-        public MyExpandableListAdapter(ArrayList<Request> requests,HashMap<String,ArrayList<Contact>> contacts){
-            super();
-            requestsList = requests;
-            contactList = contacts;
-        }
+         private class MyExpandableListAdapter extends BaseExpandableListAdapter{
+             ArrayList<Request> requestsList;
+             HashMap<String,ArrayList<Contact>> contactList;
+             public MyExpandableListAdapter(ArrayList<Request> requests,HashMap<String,ArrayList<Contact>> contacts){
+                 super();
+                 requestsList = requests;
+                 contactList = contacts;
+             }
 
-        @Override
-        public int getGroupCount() {
-            return requestsList.size();
-        }
+             @Override
+             public int getGroupCount() {
+                 return requestsList.size();
+             }
 
-        @Override
-        public int getChildrenCount(int groupPosition) {
-            return contactList.get(requestsList.get(groupPosition).mDescription).size();
-        }
+             @Override
+             public int getChildrenCount(int groupPosition) {
+                 return contactList.get(requestsList.get(groupPosition).mDescription).size();
+             }
 
-        @Override
-        public Object getGroup(int groupPosition) {
-            return contactList.get(requestsList.get(groupPosition).mDescription);
-        }
+             @Override
+             public Object getGroup(int groupPosition) {
+                 return contactList.get(requestsList.get(groupPosition).mDescription);
+             }
 
-        @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            return contactList.get(requestsList.get(groupPosition).mDescription).get(childPosition);
-        }
+             @Override
+             public Object getChild(int groupPosition, int childPosition) {
+                 return contactList.get(requestsList.get(groupPosition).mDescription).get(childPosition);
+             }
 
-        @Override
-        public long getGroupId(int groupPosition) {
-            return 0;
-        }
+             @Override
+             public long getGroupId(int groupPosition) {
+                 return 0;
+             }
 
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return 0;
-        }
+             @Override
+             public long getChildId(int groupPosition, int childPosition) {
+                 return 0;
+             }
 
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
+             @Override
+             public boolean hasStableIds() {
+                 return false;
+             }
 
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            if(convertView==null){
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.twotext_listitem,parent,false);
-            }
-            //displays request name and amount
-            if(requestsList!=null){
-                Request request = requestsList.get(groupPosition);
+             @Override
+             public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+                 if(convertView==null){
+                     LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                     convertView = inflater.inflate(R.layout.twotext_listitem,parent,false);
+                 }
+                 //displays request name and amount
+                 if(requestsList!=null){
+                     Request request = requestsList.get(groupPosition);
 
-                TextView textView = (TextView) convertView.findViewById(R.id.text1);
-                textView.setText(request.mDescription);
-                textView = (TextView) convertView.findViewById(R.id.text2);
-                textView.setText("" + request.mCount);
-            }
+                     TextView textView = (TextView) convertView.findViewById(R.id.text1);
+                     textView.setText(request.mDescription);
+                     textView = (TextView) convertView.findViewById(R.id.text2);
+                     textView.setText("" + request.mCount);
+                 }
 
-            return convertView;
-        }
+                 return convertView;
+             }
 
-        @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            if(convertView==null) {
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.contact_listitem, parent, false);
-            }
-            //displays contact information
-            if(contactList !=null) {
-                Contact contact = contactList.get(requestsList.get(groupPosition).mDescription).get(childPosition);
+             @Override
+             public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+                 if(convertView==null) {
+                     LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                     convertView = inflater.inflate(R.layout.contact_listitem, parent, false);
+                 }
+                 //displays contact information
+                 if(contactList !=null) {
+                     Contact contact = contactList.get(requestsList.get(groupPosition).mDescription).get(childPosition);
 
-                TextView textView = (TextView) convertView.findViewById(R.id.text1);
-                textView.setText(contact.mName);
-                String text=null;
-                if(contact.mStatus.equalsIgnoreCase("O")){
-                    text = "Open";
-                }else if(contact.mStatus.equalsIgnoreCase("C")){
-                    text = "Closed";
-                }
-                textView = (TextView) convertView.findViewById(R.id.text2);
-                textView.setText(text);
-                Date date = new Date(contact.mDateCreated*1000);
-                DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-                format.setTimeZone(TimeZone.getTimeZone("US/Central"));
-                text = format.format(date);
-                textView = (TextView) convertView.findViewById(R.id.text3);
-                textView.setText("Created: " + text);
-                textView = (TextView) convertView.findViewById(R.id.text4);
-                textView.setText("ID: " + contact.mContactId);
-            }
+                     TextView textView = (TextView) convertView.findViewById(R.id.text1);
+                     textView.setText(contact.mName);
+                     String text=null;
+                     if(contact.mStatus.equalsIgnoreCase("O")){
+                         text = "Open";
+                     }else if(contact.mStatus.equalsIgnoreCase("C")){
+                         text = "Closed";
+                     }
+                     textView = (TextView) convertView.findViewById(R.id.text2);
+                     textView.setText(text);
+                     Date date = new Date(contact.mDateCreated*1000);
+                     DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                     format.setTimeZone(TimeZone.getTimeZone("US/Central"));
+                     text = format.format(date);
+                     textView = (TextView) convertView.findViewById(R.id.text3);
+                     textView.setText("Created: " + text);
+                     textView = (TextView) convertView.findViewById(R.id.text4);
+                     textView.setText("ID: " + contact.mContactId);
+                 }
 
-            return convertView;
-        }
+                 return convertView;
+             }
 
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return false;
-        }
-    }
+             @Override
+             public boolean isChildSelectable(int groupPosition, int childPosition) {
+                 return false;
+             }
+         }
 }
